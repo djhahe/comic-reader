@@ -1,0 +1,31 @@
+.image-placeholder {
+  margin-top: 40px;
+  width: 600px;
+  height: 600px;
+}
+
+.alt-placeholder {
+  width: 600px;
+  height: 20px;
+}
+
+.image__loader {
+  background-color: #4f5e71;
+  animation: pulse 1.5s infinite;
+}
+
+.image-container:hover .title {
+  visibility: visible;
+}
+
+.title {
+  height: 30px;
+  visibility: hidden;
+  background-color: #4f5e71;
+  padding: 4px 20px;
+  border-radius: 10px;
+  margin: 4px 0px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
