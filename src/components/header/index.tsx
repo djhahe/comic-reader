@@ -4,6 +4,7 @@ import { Input } from '../input'
 import { useState, useEffect } from 'react'
 import { getRandomId } from '@/utils/random'
 import type { Comic } from '@/services/comic/types'
+import './style.css'
 
 export type HeaderProps = {
   search: number
