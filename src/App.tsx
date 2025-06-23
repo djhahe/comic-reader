@@ -11,6 +11,7 @@ function App() {
   const inputRef = useRef<HTMLInputElement>(null)
 
   const searchQuery = useMemo(() => Number(search) || 'latest', [search])
+  console.log('🚀 ~ App ~ searchQuery:', searchQuery)
   const { data, loading, error } = useFetchComic(searchQuery)
 
   useEffect(() => {

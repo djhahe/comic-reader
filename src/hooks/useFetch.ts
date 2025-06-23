@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from 'react'
+import { request } from '@/services/request'
 
 interface FetchState<T> {
   data: T | null
@@ -13,50 +14,33 @@ export function useFetch<T = unknown>(url?: string): FetchState<T> {
     error: null,
   })
 
-  const [currentUrl, setCurrentUrl] = useState<string | undefined>(url)
+  const fetchData = useCallback(async (fetchUrl?: string) => {
+    if (!fetchUrl) {
+      setState(prev => ({ ...prev, error: 'No URL provided' }))
+      return
+    }
 
-  const fetchData = useCallback(
-    async (fetchUrl?: string) => {
-      const targetUrl = fetchUrl || currentUrl
+    setState(prev => ({ ...prev, loading: true, error: null }))
 
-      if (!targetUrl) {
-        setState(prev => ({ ...prev, error: 'No URL provided' }))
-        return
-      }
+    try {
+      const data = await request<T>(fetchUrl)
 
-      setState(prev => ({ ...prev, loading: true, error: null }))
-
-      try {
-        const response = await fetch(targetUrl)
-
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`)
-        }
-
-        const data = await response.json()
-        setState({ data, loading: false, error: null })
-      } catch (error) {
-        setState({
-          data: null,
-          loading: false,
-          error: error instanceof Error ? error.message : 'An error occurred',
-        })
-      }
-    },
-    [currentUrl],
-  )
+      setState({ data, loading: false, error: null })
+    } catch (error) {
+      setState({
+        data: null,
+        loading: false,
+        error: error instanceof Error ? error.message : 'An error occurred',
+      })
+    }
+  }, [])
 
   useEffect(() => {
     if (url) {
-      setCurrentUrl(url)
+      console.log('🚀 ~ useEffect ~ url:', url)
+      fetchData(url)
     }
-  }, [url])
-
-  useEffect(() => {
-    if (currentUrl) {
-      fetchData()
-    }
-  }, [currentUrl, fetchData])
+  }, [url, fetchData])
 
   return {
     ...state,
