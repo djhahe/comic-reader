@@ -6,9 +6,10 @@ export interface ComicImageProps extends React.ImgHTMLAttributes<HTMLImageElemen
   alt: string
   isLoading?: boolean
   title?: string
+  error: string | null
 }
 
-export const ComicImage: React.FC<ComicImageProps> = ({ src, alt, isLoading, title, ...props }) => {
+export const ComicImage: React.FC<ComicImageProps> = ({ src, alt, isLoading, title, error, ...props }) => {
   const [isLoaded, setIsLoaded] = useState(false)
 
   // optimize image loading
@@ -19,6 +20,10 @@ export const ComicImage: React.FC<ComicImageProps> = ({ src, alt, isLoading, tit
       setIsLoaded(true)
     }
   }, [src])
+
+  if (error) {
+    return <div className="error">{error}</div>
+  }
 
   return isLoading || !isLoaded ? (
     <>

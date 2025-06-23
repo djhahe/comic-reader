@@ -37,7 +37,6 @@ export function useFetch<T = unknown>(url?: string): FetchState<T> {
 
   useEffect(() => {
     if (url) {
-      console.log('🚀 ~ useEffect ~ url:', url)
       fetchData(url)
     }
   }, [url, fetchData])
